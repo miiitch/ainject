@@ -325,5 +325,37 @@ namespace AInject.UnitTests
             Check.ThatCode(() => new Telemetry(null)).Throws<ArgumentNullException>();
         }
 
+        [Fact]
+        public void Call_TrackTrace_WithDataInTraceAndTelemetry_AndTelemetryCreatedWithData()
+        {
+            const string telemetryDataKey = "B";
+            const string telemetryDataValue = "C";
+            const TraceSeverity severity = TraceSeverity.Information;
+            var telemetryData = new TelemetryData { [telemetryDataKey] = telemetryDataValue };
+
+            var telemetry = new Telemetry(_client, telemetryData);
+
+            const string addedTelemetryKey = "C";
+            const string addedTelemetryValue = "B";
+            var addedTelemetryData  = new TelemetryData { [addedTelemetryKey] = addedTelemetryValue };
+
+            var createdTelemetry = telemetry.CloneWith(addedTelemetryData);
+
+            const string message = "TraceMessage";
+            const string telemetryDataTraceKey = "A";
+            const string telemetryDataTraceValue = "B";
+            telemetryData = new TelemetryData { [telemetryDataTraceKey] = telemetryDataTraceValue };
+
+            createdTelemetry.TrackTrace(message, severity, telemetryData);
+
+            _client.Received().TrackTrace(message, severity, Arg.Is<Dictionary<string, string>>(data =>
+                data != null &&
+                data.Count == 3 &&
+                data[telemetryDataKey] == telemetryDataValue &&            
+                data[addedTelemetryKey] == addedTelemetryValue &&
+                data[telemetryDataTraceKey] == telemetryDataTraceValue));
+
+        }
+
     }
 }
