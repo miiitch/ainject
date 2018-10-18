@@ -266,7 +266,6 @@ namespace AInject.UnitTests
             var telemetryMetrics = new TelemetryMetrics() { [telemetryMetricEventKey] = telemetryMetricEventValue };
             telemetry.TrackEvent(eventName, null, telemetryMetrics);
 
-
             _client.Received().TrackEvent(eventName,
                 Arg.Is<Dictionary<string, string>>(data =>
                     data == null ||
@@ -287,14 +286,10 @@ namespace AInject.UnitTests
             const string metricName = "MetricName";
             const double metricValue = 4.3;
 
-
-
             telemetry.TrackMetric(metricName, metricValue);
-
 
             _client.Received().TrackMetric(metricName, metricValue,
                 Arg.Is<Dictionary<string, string>>(data => data == null || data.Count == 0));
-
         }
          [Fact]
         public void Call_TrackMetric_WithData()
@@ -354,7 +349,6 @@ namespace AInject.UnitTests
                 data[telemetryDataKey] == telemetryDataValue &&            
                 data[addedTelemetryKey] == addedTelemetryValue &&
                 data[telemetryDataTraceKey] == telemetryDataTraceValue));
-
         }
 
     }
