@@ -5,26 +5,13 @@ namespace Ainject.Abstract
 {
     public sealed class TelemetryData: TelemetryInfo<string>
     {
+        public TelemetryData(TelemetryData data = null) : base(data?.Dictionary)
+        {            
+        }
 
-        public TelemetryData()
+        internal TelemetryData(Dictionary<string, string> values): base(values)
         {
 
         }
-
-        public TelemetryData(TelemetryData data) : this()
-        {
-            if (data is null) throw new ArgumentNullException(nameof(data));
-
-            data.CopyTo(Dictionary);
-        }
-
-        public TelemetryData(Dictionary<string,string> data) : base()
-        {
-            if (data is null) throw new ArgumentNullException(nameof(data));
-
-            Append(data);            
-        }
-
-
     }
 }

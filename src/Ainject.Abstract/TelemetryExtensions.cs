@@ -1,8 +1,11 @@
-﻿namespace Ainject.Abstract
+﻿using System;
+using System.Collections.Generic;
+
+namespace Ainject.Abstract
 {
     public static class TelemetryExtensions
     {
-        public static TelemetryData MergeData(this TelemetryData[] info, bool alwaysClone = false)
+        public static TelemetryData Merge(this TelemetryData[] info, bool alwaysClone = false)
         {
             TelemetryData telemetryInfo;
             if (info.Length == 1 && !alwaysClone)
@@ -12,7 +15,7 @@
             else
             {
                 telemetryInfo = new TelemetryData();
-                telemetryInfo.Append<TelemetryData, string>(info);
+                telemetryInfo.AppendAll(info);
             }
 
             return telemetryInfo;
@@ -21,47 +24,44 @@
 
         public static void TrackVerbose(this ITelemetry telemetry, string message, params TelemetryData[] info)
         {
-            var telemetryInfo = MergeData(info);
+            var telemetryInfo = Merge(info);
 
             telemetry.TrackTrace(message, TraceSeverity.Verbose, telemetryInfo);
         }
 
         public static void TrackInformation(this ITelemetry telemetry, string message, params TelemetryData[] info)
         {
-            var telemetryInfo = MergeData(info);
+            var telemetryInfo = Merge(info);
 
             telemetry.TrackTrace(message, TraceSeverity.Information, telemetryInfo);
         }
 
         public static void TrackCritical(this ITelemetry telemetry, string message, params TelemetryData[] info)
         {
-            var telemetryInfo = MergeData(info);
+            var telemetryInfo = Merge(info);
 
             telemetry.TrackTrace(message, TraceSeverity.Critical, telemetryInfo);
         }
 
         public static void TrackWarning(this ITelemetry telemetry, string message, params TelemetryData[] info)
         {
-            var telemetryInfo = MergeData(info);
+            var telemetryInfo = Merge(info);
 
             telemetry.TrackTrace(message, TraceSeverity.Warning, telemetryInfo);
         }
 
         public static void TrackError(this ITelemetry telemetry, string message, params TelemetryData[] info)
         {
-            var telemetryInfo = MergeData(info);
+            var telemetryInfo = Merge(info);
 
             telemetry.TrackTrace(message, TraceSeverity.Error, telemetryInfo);
         }
 
-        public static void Append<TTelemetry,TData>(this TTelemetry telemetry,params TTelemetry[] infoArray) where TTelemetry: TelemetryInfo<TData>
+        public static void AppendAll(this TelemetryData telemetry, IEnumerable<TelemetryData> telemetries)
         {
-            if (infoArray == null)
-            {
-                return;
-            }
+            if (telemetries is null) throw new ArgumentNullException(nameof(telemetries));
 
-            foreach (var info in infoArray)
+            foreach (var info in telemetries)
             {
                 if (info == null)
                 {

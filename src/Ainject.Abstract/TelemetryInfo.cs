@@ -7,9 +7,17 @@ namespace Ainject.Abstract
     {
         public Dictionary<string, T> Dictionary { get; }
 
-        public TelemetryInfo()
+
+        public TelemetryInfo(Dictionary<string, T> values = null)
         {
-            Dictionary = new Dictionary<string, T>();
+            if (values is null)
+            {
+                Dictionary = new Dictionary<string, T>();
+            }
+            else
+            {
+                Dictionary = new Dictionary<string, T>(values);
+            }                
         }
 
         public T this[string key]
@@ -19,11 +27,6 @@ namespace Ainject.Abstract
         }
 
         public bool IsEmpty => Dictionary.Count == 0;
-
-        public void CopyTo(TelemetryInfo<T> target)
-        {
-            CopyTo(target.Dictionary);
-        }
 
         public void CopyTo(Dictionary<string, T> target)
         {
