@@ -1,3 +1,4 @@
 # ainject
 
-A proxy for Application that support dependency injection
+A proxy for "Application Insights" that supports dependency injection
+
