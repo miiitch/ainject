@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard1.3</TargetFramework>
     <Description>A dependency injector proxy for Application Insight</Description>
     <Product>Ainject</Product>
     <Authors>Michel Perfetti</Authors>
