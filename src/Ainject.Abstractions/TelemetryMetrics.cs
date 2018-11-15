@@ -1,4 +1,4 @@
-﻿namespace Ainject.Abstract
+﻿namespace Ainject.Abstractions
 {
     public sealed class TelemetryMetrics : TelemetryInfo<double>
     {

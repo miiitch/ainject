@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Ainject.Abstract
+namespace Ainject.Abstractions
 {
     public class TelemetryInfo<T>
     {

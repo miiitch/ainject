@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Ainject.Abstract
+namespace Ainject.Abstractions
 {
     public sealed class TelemetryData: TelemetryInfo<string>
     {

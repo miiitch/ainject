@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ainject.Abstract", "Ainject.Abstract\Ainject.Abstract.csproj", "{B5BE5D76-4FEB-481F-9E9A-FB6A02471F27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ainject.Abstractions", "Ainject.Abstractions\Ainject.Abstractions.csproj", "{B5BE5D76-4FEB-481F-9E9A-FB6A02471F27}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ainject.ApplicationInsights", "Ainject.applicationInsights\Ainject.ApplicationInsights.csproj", "{80C888AB-2758-4F3A-B472-37AF68CCAB96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ainject.UnitTests", "Ainject.UnitTests\Ainject.UnitTests.csproj", "{C6FCD71A-CD62-4DAD-BD0F-8BF2059B34AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ainject.UnitTests", "Ainject.UnitTests\Ainject.UnitTests.csproj", "{C6FCD71A-CD62-4DAD-BD0F-8BF2059B34AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

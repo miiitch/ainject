@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ainject.Abstract
+﻿namespace Ainject.Abstractions
 {
     public interface ITelemetry
     {
