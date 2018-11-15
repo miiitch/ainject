@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ainject.Abstract;
+using Ainject.Abstractions;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 

@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ainject.Abstract\Ainject.Abstract.csproj" />
+    <ProjectReference Include="..\Ainject.Abstractions\Ainject.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

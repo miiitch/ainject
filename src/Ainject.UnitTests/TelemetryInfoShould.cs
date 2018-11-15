@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using Ainject.Abstract;
+using Ainject.Abstractions;
 using NFluent;
 using Xunit;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Ainject.Abstract;
+using Ainject.Abstractions;
 using NFluent;
 using Xunit;
 

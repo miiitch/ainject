@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ainject.Abstract
+namespace Ainject.Abstractions
 {
     public interface ITelemetryClient
     {
