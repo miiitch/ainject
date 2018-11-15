@@ -7,6 +7,7 @@
     <Company>Michel Perfetti</Company>
     <PackageProjectUrl>https://github.com/miiitch/ainject</PackageProjectUrl>
     <RepositoryUrl>https://github.com/miiitch/ainject</RepositoryUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/miiitch/ainject/master/LICENSE.txt</PackageLicenseUrl>
   </PropertyGroup>
 
 </Project>
