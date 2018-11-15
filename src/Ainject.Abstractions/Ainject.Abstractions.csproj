@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard1.3</TargetFramework>
     <Description>Abstractions  for a dependency injector proxy for Application Insight</Description>
     <Authors>Michel Perfetti</Authors>
     <Company>Michel Perfetti</Company>
     <PackageProjectUrl>https://github.com/miiitch/ainject</PackageProjectUrl>
     <RepositoryUrl>https://github.com/miiitch/ainject</RepositoryUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/miiitch/ainject/master/LICENSE.txt</PackageLicenseUrl>
   </PropertyGroup>
 
 </Project>
