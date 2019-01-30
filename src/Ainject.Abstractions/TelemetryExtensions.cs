@@ -5,18 +5,11 @@ namespace Ainject.Abstractions
 {
     public static class TelemetryExtensions
     {
-        public static TelemetryData Merge(this TelemetryData[] info, bool alwaysClone = false)
+        public static TelemetryData Merge(this TelemetryData[] info)
         {
-            TelemetryData telemetryInfo;
-            if (info.Length == 1 && !alwaysClone)
-            {            
-                telemetryInfo = info[0];
-            }
-            else
-            {
-                telemetryInfo = new TelemetryData();
-                telemetryInfo.AppendAll(info);
-            }
+            var telemetryInfo = new TelemetryData();
+            telemetryInfo.AppendAll(info);
+
 
             return telemetryInfo;
         }
@@ -66,16 +59,16 @@ namespace Ainject.Abstractions
                 if (info == null)
                 {
                     continue;
-                    
+
                 }
-                foreach (var kv in info.Dictionary)
+                foreach (var kv in info.GetDictionary())
                 {
-                    telemetry.Dictionary[kv.Key] = kv.Value;
+                    telemetry[kv.Key] = kv.Value;
                 }
-              
+
             }
         }
 
-        
+
     }
 }

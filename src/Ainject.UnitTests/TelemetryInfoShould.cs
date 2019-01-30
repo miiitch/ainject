@@ -16,7 +16,7 @@ namespace Ainject.UnitTests
         {
             var info = new TelemetryInfo<int>();
 
-            Check.That(info.Dictionary).IsNotNull().And.IsEmpty();
+            Check.That(info.GetDictionary()).IsNotNull().And.IsEmpty();
             Check.That(info.IsEmpty).IsTrue();
         }
 
@@ -32,7 +32,7 @@ namespace Ainject.UnitTests
             var info = new TelemetryInfo<int>(originalValues);
 
 
-            Check.That(info.Dictionary).IsNotNull().And.ContainsExactly(originalValues).And.Not
+            Check.That(info.GetDictionary()).IsNotNull().And.ContainsExactly(originalValues).And.Not
                 .IsSameReferenceAs(originalValues);
 
             Check.That(info.IsEmpty).IsFalse();
@@ -72,7 +72,7 @@ namespace Ainject.UnitTests
 
             var expectedValues = new Dictionary<string, int>()
             {
-                ["A"] = 3,
+                ["A"] = 1,
                 ["B"] = 2,
                 ["C"] = 4,
             };
@@ -82,7 +82,7 @@ namespace Ainject.UnitTests
             info.Append(appendValues);
 
 
-            Check.That(info.Dictionary).ContainsExactly(expectedValues);
+            Check.That(info.GetDictionary()).ContainsExactly(expectedValues);
         }
 
         [Fact]

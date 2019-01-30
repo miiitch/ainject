@@ -15,8 +15,8 @@ namespace Ainject.UnitTests
 
             var createdMetrics = new TelemetryMetrics(metrics);
 
-            Check.That(createdMetrics.Dictionary).Not.IsSameReferenceAs(metrics.Dictionary).And
-                .ContainsExactly(metrics.Dictionary);
+            Check.That(createdMetrics.GetDictionary()).Not.IsSameReferenceAs(metrics.GetDictionary()).And
+                .ContainsExactly(metrics.GetDictionary());
 
         }
     }

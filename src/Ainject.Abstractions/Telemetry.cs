@@ -47,7 +47,7 @@ namespace Ainject.Abstractions
             Dictionary<string, string> result = null;
             if (_data == null || _data.IsEmpty)
             {
-                result = telemetryData?.Dictionary;
+                result = telemetryData?.GetDictionary();
             }
             else if (telemetryData != null && !telemetryData.IsEmpty)
             {
@@ -57,7 +57,7 @@ namespace Ainject.Abstractions
             }
             else
             {
-                result = _data.Dictionary;
+                result = _data.GetDictionary();
             }
 
             return result;
@@ -75,7 +75,7 @@ namespace Ainject.Abstractions
         {
             var eventData = GenerateTelemetryDictionary(telemetryData);
 
-            TrackEventCore(eventName, eventData, metrics?.Dictionary);
+            TrackEventCore(eventName, eventData, metrics?.GetDictionary());
         }
 
         public void TrackMetric(string metricName, double value, TelemetryData telemetryData = null)

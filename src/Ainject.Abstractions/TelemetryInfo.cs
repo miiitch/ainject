@@ -1,38 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Ainject.Abstractions
 {
     public class TelemetryInfo<T>
     {
-        public Dictionary<string, T> Dictionary { get; }
+        private readonly Dictionary<string, T> _dictionary;
+
+        public Dictionary<string, T> GetDictionary() => new Dictionary<string, T>(_dictionary);
 
 
-        public TelemetryInfo(Dictionary<string, T> values = null)
+        public TelemetryInfo() : this(null)
+        {
+
+        }
+
+        public TelemetryInfo(IDictionary<string, T> values)
         {
             if (values is null)
             {
-                Dictionary = new Dictionary<string, T>();
+                _dictionary = new Dictionary<string, T>();
             }
             else
             {
-                Dictionary = new Dictionary<string, T>(values);
+                _dictionary = new Dictionary<string, T>(values);
             }                
+        }
+
+        private void AddKeyValue(string key, T value)
+        {
+            if (_dictionary.ContainsKey(key))
+            {
+                return;
+            }
+            _dictionary.Add(key,value);
         }
 
         public T this[string key]
         {
-            get => Dictionary[key];
-            set => Dictionary[key] = value;
+            get => _dictionary[key];
+            set => AddKeyValue(key, value);
         }
 
-        public bool IsEmpty => Dictionary.Count == 0;
+        public bool IsEmpty => _dictionary.Count == 0;
 
         public void CopyTo(Dictionary<string, T> target)
         {
             if (target is null) throw new ArgumentNullException(nameof(target));
 
-            foreach (var kv in Dictionary)
+            foreach (var kv in _dictionary)
             {
                 target[kv.Key] = kv.Value;
             }

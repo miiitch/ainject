@@ -17,29 +17,21 @@ namespace Ainject.UnitTests
 
             var createdTelemetry = new TelemetryData(data);
 
-            Check.That(createdTelemetry.Dictionary).Not.IsSameReferenceAs(data.Dictionary).And
-                .ContainsExactly(data.Dictionary);
+            Check.That(createdTelemetry.GetDictionary()).Not.IsSameReferenceAs(data.GetDictionary()).And
+                .ContainsExactly(data.GetDictionary());
 
         }
 
-        [Fact]
-        public void Merge_Of_A_Single_Data_Array_With_No_Always_Clone_Must_Not_Clone_A_Single_Data()
-        {
-            var data = new TelemetryData {["D"] = "C"};
-            var dataArray = new[] { data};
-            var mergedData = dataArray.Merge();
 
-            Check.That(mergedData.Dictionary).ContainsExactly(data.Dictionary).And.IsSameReferenceAs(data.Dictionary);
-        }
 
         [Fact]
-        public void Merge_Of_A_Single_Data_Array_With_Always_Clone_Must_Clone_A_Single_Data()
+        public void Merge_Of_A_Single_Data_Array()
         {
             var data = new TelemetryData { ["D"] = "C" };
             var dataArray = new[] { data };
-            var mergedData = dataArray.Merge(true);
+            var mergedData = dataArray.Merge();
 
-            Check.That(mergedData.Dictionary).ContainsExactly(data.Dictionary).And.Not.IsSameReferenceAs(data.Dictionary);
+            Check.That(mergedData.GetDictionary()).ContainsExactly(data.GetDictionary());
         }
 
         [Fact]
@@ -64,10 +56,10 @@ namespace Ainject.UnitTests
             var expected = new Dictionary<string, string>()
             {
                 ["A"] = "X",
-                ["B"] = "Z",
+                ["B"] = "Y",
                 ["C"] = "Z",
             };
-            Check.That(result.Dictionary).ContainsExactly(expected);
+            Check.That(result.GetDictionary()).ContainsExactly(expected);
         }
 
 
@@ -97,10 +89,10 @@ namespace Ainject.UnitTests
             var expected = new Dictionary<string, string>()
             {
                 ["A"] = "X",
-                ["B"] = "Z",
+                ["B"] = "Y",
                 ["C"] = "Z",
             };
-            Check.That(result.Dictionary).ContainsExactly(expected);
+            Check.That(result.GetDictionary()).ContainsExactly(expected);
         }
 
         [Fact]
@@ -109,6 +101,17 @@ namespace Ainject.UnitTests
             var result = new TelemetryData();
 
             Check.ThatCode(() => result.AppendAll(null)).Throws<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void Does_Not_Override_Existing_Data()
+        {
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var data = new TelemetryData();
+            data["A"] = "X";
+            data["A"] = "Y";
+
+            Check.That(data["A"]).IsEqualTo("X");
         }
 
 
