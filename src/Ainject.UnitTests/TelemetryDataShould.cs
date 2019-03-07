@@ -83,6 +83,7 @@ namespace Ainject.UnitTests
           
             var result = new TelemetryData();
 
+            // ReSharper disable once ExpressionIsAlwaysNull
             var dataToAppend = new[] {data1, data2, data3};
 
             result.AppendAll(dataToAppend);
