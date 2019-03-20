@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ainject.Abstractions.Internals;
 
 namespace Ainject.Abstractions
 {

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ainject.Abstractions;
+using Ainject.Abstractions.Internals;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 
-namespace Ainject.ApplicationInsights
+namespace Ainject.ApplicationInsights.Internals
 {
+
     internal sealed class ApplicationInsightTelemetryClient : ITelemetryClient
     {
         private readonly TelemetryClient _telemetryClient;

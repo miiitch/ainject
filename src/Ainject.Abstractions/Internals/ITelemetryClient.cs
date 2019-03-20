@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Ainject.Abstractions
+namespace Ainject.Abstractions.Internals
 {
+    /// <summary>
+    /// Internal use only
+    /// </summary>
     public interface ITelemetryClient
     {
         void TrackTrace(string message, TraceSeverity severity,Dictionary<string, string> telemetryData);

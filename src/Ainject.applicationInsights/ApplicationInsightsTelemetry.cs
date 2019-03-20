@@ -1,4 +1,5 @@
 ﻿using Ainject.Abstractions;
+using Ainject.ApplicationInsights.Internals;
 using Microsoft.ApplicationInsights;
 
 namespace Ainject.ApplicationInsights

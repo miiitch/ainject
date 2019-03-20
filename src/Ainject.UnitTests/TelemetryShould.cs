@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Ainject.Abstractions;
+using Ainject.Abstractions.Internals;
 using NFluent;
 using NSubstitute;
 using Xunit;
