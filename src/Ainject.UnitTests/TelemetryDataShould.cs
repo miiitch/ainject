@@ -50,7 +50,7 @@ namespace Ainject.UnitTests
                 ["C"] = "Z",
             };
 
-            var data = new TelemetryData [] { data1,data2};
+            var data = new[] { data1,data2};
             var result = data.Merge();
 
             var expected = new Dictionary<string, string>()
