@@ -42,19 +42,41 @@ namespace Ainject.ApplicationInsights.Internals
 
         public void TrackTrace(string message, TraceSeverity severity,
             Dictionary<string, string> telemetryData)
-        {           
-            _telemetryClient.TrackTrace(message, ConvertToSeverityLevel(severity), telemetryData);  
-                                       
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(message));
+
+            _telemetryClient.TrackTrace(message, ConvertToSeverityLevel(severity), telemetryData);
         }
 
         public void TrackEvent(string eventName, Dictionary<string, string> telemetryData, Dictionary<string, double> metrics)
         {
+            if (string.IsNullOrWhiteSpace(eventName))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(eventName));
+
             _telemetryClient.TrackEvent(eventName, telemetryData,metrics);
         }
 
-        public void TrackMetric(string metricName, double value, Dictionary<string, string> telemetryData)
+        public void TrackMetric(string metricName, double value)
         {
-            _telemetryClient.TrackMetric(metricName,value,telemetryData);
+            if (string.IsNullOrWhiteSpace(metricName))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(metricName));
+            _telemetryClient.GetMetric(metricName).TrackValue(metricName);
+        }
+
+        public void TrackMetric(string metricName, Dictionary<string, double> values)
+        {
+         
+            if (values is null) throw new ArgumentNullException(nameof(values));
+            if (string.IsNullOrWhiteSpace(metricName))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(metricName));
+
+            var metric = _telemetryClient.GetMetric(metricName);
+
+            foreach (var kvp in values)
+            {
+                metric.TrackValue(kvp.Value,kvp.Key);
+            }
         }
     }
 }

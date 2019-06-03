@@ -34,10 +34,15 @@ namespace Ainject.Abstractions
             _client.TrackEvent(eventName, telemetryData, metrics);
         }
 
-        private void TrackMetricCore(string metricName, double value,
-            Dictionary<string, string> telemetryData)
+        private void TrackMetricCore(string metricName, double value)
         {
-            _client.TrackMetric(metricName, value, telemetryData);
+            _client.TrackMetric(metricName, value);
+
+        }
+
+        private void TrackMetricCore(string metricName, Dictionary<string, double> values)
+        {
+            _client.TrackMetric(metricName, values);
 
         }
 
@@ -79,11 +84,15 @@ namespace Ainject.Abstractions
             TrackEventCore(eventName, eventData, metrics?.GetDictionary());
         }
 
-        public void TrackMetric(string metricName, double value, TelemetryData telemetryData = null)
+        public void TrackMetric(string metricName, double value)
         {
-            var metricData = GenerateTelemetryDictionary(telemetryData);
+            TrackMetricCore(metricName, value);
+        }
 
-            TrackMetricCore(metricName, value, metricData);
+        public void TrackMetric(string metricName, TelemetryMetrics values)
+        {
+            if (values is null) throw new ArgumentNullException(nameof(values));
+            TrackMetricCore(metricName, values.GetDictionary());
         }
 
         public ITelemetry CloneWith(TelemetryData telemetryData)

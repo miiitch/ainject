@@ -6,7 +6,9 @@
 
         void TrackEvent(string eventName, TelemetryData telemetryData = null, TelemetryMetrics metrics = null);
 
-        void TrackMetric(string metricName,double value, TelemetryData telemetryData = null);
+        void TrackMetric(string metricName,double value);
+
+        void TrackMetric(string metricName, TelemetryMetrics values);
 
         ITelemetry CloneWith(TelemetryData telemetryData);
     }

@@ -1,4 +1,5 @@
 ﻿using Ainject.Abstractions;
+using Microsoft.ApplicationInsights;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ainject.ApplicationInsights
@@ -8,7 +9,16 @@ namespace Ainject.ApplicationInsights
 
         public static IServiceCollection AddAInject(this IServiceCollection services)
         {
-            return services.AddScoped<ITelemetry, ApplicationInsightTelemetry>();
+            return services.AddSingleton<ITelemetry, ApplicationInsightTelemetry>();
+        }
+
+        public static IServiceCollection AddAInject(this IServiceCollection services, TelemetryData defaultData)
+        {
+            return services.AddSingleton<ITelemetry>(svcs =>
+            {
+                var telemetryClient = svcs.GetService<TelemetryClient>();
+                return new ApplicationInsightTelemetry(telemetryClient, defaultData);
+            });
         }
     }
 }

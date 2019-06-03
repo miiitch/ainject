@@ -11,6 +11,8 @@ namespace Ainject.Abstractions.Internals
 
         void TrackEvent(string eventName, Dictionary<string, string> telemetryData, Dictionary<string, double> metrics);
 
-        void TrackMetric(string metricName, double value, Dictionary<string, string> telemetryData);
+        void TrackMetric(string metricName, double value);
+
+        void TrackMetric(string metricName, Dictionary<string, double> values);
     }
 }

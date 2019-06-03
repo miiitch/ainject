@@ -289,31 +289,43 @@ namespace Ainject.UnitTests
 
             telemetry.TrackMetric(metricName, metricValue);
 
-            _client.Received().TrackMetric(metricName, metricValue,
-                Arg.Is<Dictionary<string, string>>(data => data == null || data.Count == 0));
+            _client.Received().TrackMetric(metricName, metricValue);
         }
-         [Fact]
-        public void Call_TrackMetric_WithData()
+
+        [Fact]
+        public void Call_TrackMetric_WithNullDimensionValues()
         {
             var telemetry = new Telemetry(_client);
 
             const string metricName = "MetricName";
-            const double metricValue = 4.3;
-
-            const string telemetryDataEventKey = "A";
-            const string telemetryDataEventValue = "B";
-            var telemetryData = new TelemetryData { [telemetryDataEventKey] = telemetryDataEventValue };
-
-            telemetry.TrackMetric(metricName, metricValue, telemetryData);
 
 
-            _client.Received().TrackMetric(metricName, metricValue,
-                Arg.Is<Dictionary<string, string>>(data =>
-                    data != null &&
-                    data.Count == 1 &&
-                    data[telemetryDataEventKey] == telemetryDataEventValue));
+            Check.ThatCode(() => telemetry.TrackMetric(metricName, null)).Throws<ArgumentNullException>();
+
 
         }
+
+        [Fact]
+        public void Call_TrackMetric_WithDimensions()
+        {
+            var telemetry = new Telemetry(_client);
+
+            const string metricName = "MetricName";
+            var values = new TelemetryMetrics()
+            {
+                ["Dim1"] = 4,
+                ["Dim2"] = 2
+            };
+
+            telemetry.TrackMetric(metricName, values);
+
+            _client.Received().TrackMetric(metricName, Arg.Is<Dictionary<string,double>>(v => v != null &&
+                       v.Count == 2 &&
+                       v["Dim1"] == 4.0 &&
+                       v["Dim2"] == 2.0
+            ));
+        }
+
 
         [Fact]
         public void Throw_Exception_IfClientIsNull()
