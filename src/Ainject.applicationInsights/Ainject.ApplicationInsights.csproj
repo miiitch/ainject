@@ -6,7 +6,8 @@
     <Product>Ainject</Product>
     <Authors>Michel Perfetti</Authors>
     <PackageProjectUrl>https://github.com/miiitch/ainject</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/miiitch/ainject/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ainject.Abstractions\Ainject.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
