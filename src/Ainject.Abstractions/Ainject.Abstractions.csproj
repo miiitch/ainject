@@ -9,7 +9,8 @@
     <RepositoryUrl>https://github.com/miiitch/ainject</RepositoryUrl>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <PackageIcon>icon.png</PackageIcon>
+   
+    <PackageIconUrl>https://raw.githubusercontent.com/miiitch/ainject/master/icon.png</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,11 +19,6 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\icon.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+
 
 </Project>
