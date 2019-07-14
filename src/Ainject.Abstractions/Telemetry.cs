@@ -9,14 +9,14 @@ namespace Ainject.Abstractions
         private readonly ITelemetryClient _client;
         private readonly TelemetryData _data;
 
-        public Telemetry(ITelemetryClient client, TelemetryData data)
+        protected Telemetry(ITelemetryClient client, TelemetryData data)
         {
             if (client is null) throw new ArgumentNullException(nameof(client));
             _client = client;
             _data = data;
         }
 
-        public Telemetry(ITelemetryClient client) : this(client, null)
+        protected Telemetry(ITelemetryClient client) : this(client, null)
         {
 
         }
