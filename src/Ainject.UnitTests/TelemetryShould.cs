@@ -23,6 +23,19 @@ namespace Ainject.UnitTests
             
         }
 
+
+        [Fact]
+        public void Call_TrackException_Propagages_The_Same_Exception()
+        {
+            var telemetry = new Telemetry(_client);
+
+            var exception = new Exception("Test Exception");
+
+            telemetry.TrackException(exception);
+
+            _client.Received().TrackException(Arg.Is<Exception>(ex => ex.Equals(exception)), null, null);
+        }
+
         [Fact]
         public void Call_TraceTrace_with_Information_level_when_TrackInformation_is_called()
         {

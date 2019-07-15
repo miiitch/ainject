@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Ainject.Abstractions.Internals
 {
@@ -48,6 +49,13 @@ namespace Ainject.Abstractions.Internals
         {
             WriteLine($"[MET] {metricName}");
             Write(values);
+        }
+
+        public void TrackException(Exception exception, Dictionary<string, string> telemetryData, Dictionary<string, double> metrics)
+        {
+            WriteLine($"[EXC] {exception.Message}");
+            Write(telemetryData);
+            Write(metrics);
         }
 
         public void TrackTrace(string message, TraceSeverity severity, Dictionary<string, string> telemetryData)

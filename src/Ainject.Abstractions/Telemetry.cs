@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Ainject.Abstractions.Internals;
 
-[assembly:InternalsVisibleTo("Ainject.UnitTests")]
+[assembly: InternalsVisibleTo("Ainject.UnitTests")]
 
 namespace Ainject.Abstractions
 {
@@ -46,7 +46,12 @@ namespace Ainject.Abstractions
         private void TrackMetricCore(string metricName, Dictionary<string, double> values)
         {
             _client.TrackMetric(metricName, values);
+        }
 
+        private void TrackExceptionCore(Exception exception, Dictionary<string, string> telemetryData,
+            Dictionary<string, double> metrics)
+        {
+            _client.TrackException(exception, telemetryData, metrics);
         }
 
 
@@ -98,11 +103,20 @@ namespace Ainject.Abstractions
             TrackMetricCore(metricName, values.GetDictionary());
         }
 
+        public void TrackException(Exception exception, TelemetryData telemetryData = null, TelemetryMetrics metrics = null)
+        {
+            if (exception is null) throw new ArgumentNullException(nameof(exception));
+
+            var eventData = GenerateTelemetryDictionary(telemetryData);
+
+            TrackExceptionCore(exception, eventData, metrics?.GetDictionary());
+        }
+
         public ITelemetry CloneWith(TelemetryData telemetryData)
         {
             var data = GenerateTelemetryDictionary(telemetryData);
 
-            return new Telemetry(_client,new TelemetryData(data));
+            return new Telemetry(_client, new TelemetryData(data));
         }
     }
 }

@@ -78,5 +78,11 @@ namespace Ainject.ApplicationInsights.Internals
                 metric.TrackValue(kvp.Value,kvp.Key);
             }
         }
+
+
+        public void TrackException(Exception exception, Dictionary<string, string> telemetryData, Dictionary<string, double> metrics)
+        {
+            _telemetryClient.TrackException(exception, telemetryData, metrics);
+        }
     }
 }

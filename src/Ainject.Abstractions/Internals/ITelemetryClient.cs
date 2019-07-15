@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Ainject.Abstractions.Internals
 {
@@ -14,5 +15,8 @@ namespace Ainject.Abstractions.Internals
         void TrackMetric(string metricName, double value);
 
         void TrackMetric(string metricName, Dictionary<string, double> values);
+
+        void TrackException(Exception exception, Dictionary<string, string> telemetryData,
+            Dictionary<string, double> metrics);
     }
 }

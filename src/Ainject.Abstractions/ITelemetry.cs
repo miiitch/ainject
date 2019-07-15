@@ -1,4 +1,6 @@
-﻿namespace Ainject.Abstractions
+﻿using System;
+
+namespace Ainject.Abstractions
 {
     public interface ITelemetry
     {
@@ -9,6 +11,8 @@
         void TrackMetric(string metricName,double value);
 
         void TrackMetric(string metricName, TelemetryMetrics values);
+
+        void TrackException(Exception exception, TelemetryData telemetryData = null, TelemetryMetrics metrics = null);
 
         ITelemetry CloneWith(TelemetryData telemetryData);
     }
