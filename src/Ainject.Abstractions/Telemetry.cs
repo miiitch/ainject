@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Ainject.Abstractions.Internals;
+
+[assembly:InternalsVisibleTo("Ainject.UnitTests")]
 
 namespace Ainject.Abstractions
 {
@@ -9,14 +12,14 @@ namespace Ainject.Abstractions
         private readonly ITelemetryClient _client;
         private readonly TelemetryData _data;
 
-        protected Telemetry(ITelemetryClient client, TelemetryData data)
+        protected internal Telemetry(ITelemetryClient client, TelemetryData data)
         {
             if (client is null) throw new ArgumentNullException(nameof(client));
             _client = client;
             _data = data;
         }
 
-        protected Telemetry(ITelemetryClient client) : this(client, null)
+        protected internal Telemetry(ITelemetryClient client) : this(client, null)
         {
 
         }
