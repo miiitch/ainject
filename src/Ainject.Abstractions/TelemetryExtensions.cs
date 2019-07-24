@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Ainject.Abstractions
 {
@@ -67,6 +68,23 @@ namespace Ainject.Abstractions
                 }
 
             }
+        }
+
+        public static TelemetryMetrics ToTelemetryMetrics(this Stopwatch stopwatch, TelemetryMetrics metrics = null)
+        {
+            if (stopwatch == null) throw new ArgumentNullException(nameof(stopwatch));
+            if (metrics == null)
+            {
+                metrics = new TelemetryMetrics();
+            }
+
+            metrics["ElapsedTotalDays"] = stopwatch.Elapsed.TotalDays;
+            metrics["ElapsedTotalHours"] = stopwatch.Elapsed.TotalHours;
+            metrics["ElapsedTotalMinutes"] = stopwatch.Elapsed.TotalMinutes;
+            metrics["ElapsedTotalSeconds"] = stopwatch.Elapsed.Seconds;
+            metrics["ElapsedMilliseconds"] = stopwatch.ElapsedMilliseconds;
+
+            return metrics;
         }
 
 
