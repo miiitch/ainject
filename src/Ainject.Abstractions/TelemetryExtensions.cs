@@ -78,11 +78,11 @@ namespace Ainject.Abstractions
                 metrics = new TelemetryMetrics();
             }
 
-            metrics["ElapsedTotalDays"] = stopwatch.Elapsed.TotalDays;
-            metrics["ElapsedTotalHours"] = stopwatch.Elapsed.TotalHours;
-            metrics["ElapsedTotalMinutes"] = stopwatch.Elapsed.TotalMinutes;
-            metrics["ElapsedTotalSeconds"] = stopwatch.Elapsed.Seconds;
-            metrics["ElapsedMilliseconds"] = stopwatch.ElapsedMilliseconds;
+            metrics["Day"] = stopwatch.Elapsed.TotalDays;
+            metrics["Hour"] = stopwatch.Elapsed.TotalHours;
+            metrics["Minute"] = stopwatch.Elapsed.TotalMinutes;
+            metrics["Second"] = stopwatch.Elapsed.Seconds;
+            metrics["Millisecond"] = stopwatch.ElapsedMilliseconds;
 
             return metrics;
         }
