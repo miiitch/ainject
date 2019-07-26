@@ -64,21 +64,24 @@ namespace Ainject.ApplicationInsights.Internals
             if (string.IsNullOrWhiteSpace(metricName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(metricName));
 
-            _telemetryClient.GetMetric(metricName,"value").TrackValue(metricName);
+            _telemetryClient.GetMetric(metricName).TrackValue(value);
         }
 
         
 
-        public void TrackMetric(string metricName, Dictionary<string, double> values)
+        public void TrackMetric(string metricName, string dimensionName, Dictionary<string, double> values)
         {
          
             if (values is null) throw new ArgumentNullException(nameof(values));
             if (string.IsNullOrWhiteSpace(metricName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(metricName));
 
-            var metricDefinition = new MetricIdentifier(null, metricName,values.Keys.ToList());
+            var metricDefinition = new MetricIdentifier(MetricIdentifier.DefaultMetricNamespace, 
+                metricName,
+                dimensionName);
+            
             var metric = _telemetryClient.GetMetric(metricDefinition);
-
+            
             foreach (var kvp in values)
             {
                 metric.TrackValue(kvp.Value,kvp.Key);

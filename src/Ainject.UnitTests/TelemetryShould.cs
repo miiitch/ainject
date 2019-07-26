@@ -313,7 +313,7 @@ namespace Ainject.UnitTests
             const string metricName = "MetricName";
 
 
-            Check.ThatCode(() => telemetry.TrackMetric(metricName, null)).Throws<ArgumentNullException>();
+            Check.ThatCode(() => telemetry.TrackMetric(metricName,"dimension", null)).Throws<ArgumentNullException>();
 
 
         }
@@ -330,9 +330,9 @@ namespace Ainject.UnitTests
                 ["Dim2"] = 2
             };
 
-            telemetry.TrackMetric(metricName, values);
+            telemetry.TrackMetric(metricName,"dimension", values);
 
-            _client.Received().TrackMetric(metricName, Arg.Is<Dictionary<string,double>>(v => v != null &&
+            _client.Received().TrackMetric(metricName, "dimension", Arg.Is<Dictionary<string,double>>(v => v != null &&
                        v.Count == 2 &&
                        v["Dim1"] == 4.0 &&
                        v["Dim2"] == 2.0

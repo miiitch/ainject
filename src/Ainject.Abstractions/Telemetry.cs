@@ -43,9 +43,9 @@ namespace Ainject.Abstractions
 
         }
 
-        private void TrackMetricCore(string metricName, Dictionary<string, double> values)
+        private void TrackMetricCore(string metricName,string dimensionName, Dictionary<string, double> values)
         {
-            _client.TrackMetric(metricName, values);
+            _client.TrackMetric(metricName,dimensionName, values);
         }
 
         private void TrackExceptionCore(Exception exception, Dictionary<string, string> telemetryData,
@@ -97,10 +97,10 @@ namespace Ainject.Abstractions
             TrackMetricCore(metricName, value);
         }
 
-        public void TrackMetric(string metricName, TelemetryMetrics values)
+        public void TrackMetric(string metricName, string dimensionName, TelemetryMetrics values)
         {
             if (values is null) throw new ArgumentNullException(nameof(values));
-            TrackMetricCore(metricName, values.GetDictionary());
+            TrackMetricCore(metricName, dimensionName,values.GetDictionary());
         }
 
         public void TrackException(Exception exception, TelemetryData telemetryData = null, TelemetryMetrics metrics = null)

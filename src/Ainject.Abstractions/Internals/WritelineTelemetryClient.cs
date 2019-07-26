@@ -45,9 +45,9 @@ namespace Ainject.Abstractions.Internals
             WriteLine($"[MET] {metricName}={value:F}");
         }
 
-        public void TrackMetric(string metricName, Dictionary<string, double> values)
+        public void TrackMetric(string metricName, string dimensionName, Dictionary<string, double> values)
         {
-            WriteLine($"[MET] {metricName}");
+            WriteLine($"[MET] {metricName} ({dimensionName})");
             Write(values);
         }
 

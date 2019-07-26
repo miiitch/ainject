@@ -10,7 +10,7 @@ namespace Ainject.Abstractions
 
         void TrackMetric(string metricName,double value);
 
-        void TrackMetric(string metricName, TelemetryMetrics values);
+        void TrackMetric(string metricName, string dimensionName, TelemetryMetrics values);
 
         void TrackException(Exception exception, TelemetryData telemetryData = null, TelemetryMetrics metrics = null);
 
