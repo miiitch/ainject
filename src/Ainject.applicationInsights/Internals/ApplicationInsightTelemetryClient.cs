@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ainject.Abstractions;
 using Ainject.Abstractions.Internals;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Metrics;
 
 namespace Ainject.ApplicationInsights.Internals
 {
@@ -61,8 +63,11 @@ namespace Ainject.ApplicationInsights.Internals
         {
             if (string.IsNullOrWhiteSpace(metricName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(metricName));
-            _telemetryClient.GetMetric(metricName).TrackValue(metricName);
+
+            _telemetryClient.GetMetric(metricName,"value").TrackValue(metricName);
         }
+
+        
 
         public void TrackMetric(string metricName, Dictionary<string, double> values)
         {
@@ -71,7 +76,8 @@ namespace Ainject.ApplicationInsights.Internals
             if (string.IsNullOrWhiteSpace(metricName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(metricName));
 
-            var metric = _telemetryClient.GetMetric(metricName);
+            var metricDefinition = new MetricIdentifier(null, metricName,values.Keys.ToList());
+            var metric = _telemetryClient.GetMetric(metricDefinition);
 
             foreach (var kvp in values)
             {
