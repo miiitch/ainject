@@ -2,7 +2,7 @@
 
 namespace Ainject.Abstractions.Internals
 {
-    public class DebugTelemetryClient : WritelineTelemetryClient
+    internal class DebugTelemetryClient : WritelineTelemetryClient
     {
         protected override void WriteLine(string line)
         {

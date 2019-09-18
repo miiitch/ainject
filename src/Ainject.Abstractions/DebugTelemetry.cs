@@ -4,11 +4,11 @@ namespace Ainject.Abstractions
 {
     public class DebugTelemetry: Telemetry
     {
-        protected DebugTelemetry(TelemetryData data) : base(new DebugTelemetryClient(), data)
+        public DebugTelemetry(TelemetryData data) : base(new DebugTelemetryClient(), data)
         {
         }
 
-        protected DebugTelemetry() : base(new DebugTelemetryClient())
+        public DebugTelemetry() : base(new DebugTelemetryClient())
         {
         }
     }
