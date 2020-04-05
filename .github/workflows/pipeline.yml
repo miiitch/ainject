@@ -18,13 +18,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2      
+    - name: Fetch all history for all tags and branches
+      run: git fetch --prune --unshallow
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.2
+      with:
+          versionSpec: '5.2.x'
+    - name: Use GitVersion
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101  
         
     - name: Build
-      run: dotnet build --configuration Release src/Ainject.applicationInsights
+      run: dotnet build --configuration Release src/Ainject.applicationInsights  /property:Version=${{gitversion.MajorMinorPatch}}
       
     - name: Test **/*[Tt]ests/*.csproj
       run: dotnet test --no-restore --verbosity normal src/Ainject.UnitTests
