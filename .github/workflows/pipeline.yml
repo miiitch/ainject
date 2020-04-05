@@ -41,5 +41,5 @@ jobs:
     - name: Pack
       run: |
         dotnet pack --no-build src/Ainject.applicationInsights /p:Configuration=Release /p:PackageVersion=${{steps.gitversion.outputs.NuGetVersion}} --output ./packages
-        dotnet pack --no-build src/Ainject.Ainject.Abstractions /p:Configuration=Release /p:PackageVersion=${{steps.gitversion.outputs.NuGetVersion}} --output ./packages
+        dotnet pack --no-build src/Ainject.Abstractions /p:Configuration=Release /p:PackageVersion=${{steps.gitversion.outputs.NuGetVersion}} --output ./packages
    
