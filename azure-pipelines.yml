@@ -10,70 +10,72 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-jobs: 
-  - job: Build
-    displayName: Build
-    variables:
-      buildPlatform: 'Any CPU'
-      buildConfiguration: 'Release'
-      projects: '**/*.csproj'
-      testProjects: '**/*.*Tests.csproj'
-    steps:
-    - task: NuGetToolInstaller@1
-      displayName: 'Use NuGet 5.1.0'
-      inputs:
-        versionSpec: 5.1.0
+stages:
+  - stage: Build
+    jobs: 
+      - job: Build
+        displayName: Build
+        variables:
+          buildPlatform: 'Any CPU'
+          buildConfiguration: 'Release'
+          projects: '**/*.csproj'
+          testProjects: '**/*.*Tests.csproj'
+        steps:
+        - task: NuGetToolInstaller@1
+          displayName: 'Use NuGet 5.1.0'
+          inputs:
+            versionSpec: 5.1.0
 
-    - task: GitVersion@4
-      displayName: GitVersion
-      inputs:
-        preferBundledVersion: false
+        - task: GitVersion@4
+          displayName: GitVersion
+          inputs:
+            preferBundledVersion: false
 
-    - task: DotNetCoreCLI@2
-      displayName: Restore
-      inputs:
-        command: restore
-        projects: '$(projects)'
+        - task: DotNetCoreCLI@2
+          displayName: Restore
+          inputs:
+            command: restore
+            projects: '$(projects)'
 
-    - task: DotNetCoreCLI@2
-      displayName: Build
-      inputs:
-        projects: '$(projects)'
-        arguments: '--configuration $(buildConfiguration) --no-restore /property:Version=$(GitVersion.MajorMinorPatch)'
-    
-    - task: DotNetCoreCLI@2
-      displayName: Test
-      inputs:
-        command: test
-        projects: '$(testProjects)'
-        arguments: '--configuration $(buildConfiguration) --no-build --no-restore'
+        - task: DotNetCoreCLI@2
+          displayName: Build
+          inputs:
+            projects: '$(projects)'
+            arguments: '--configuration $(buildConfiguration) --no-restore /property:Version=$(GitVersion.MajorMinorPatch)'
+        
+        - task: DotNetCoreCLI@2
+          displayName: Test
+          inputs:
+            command: test
+            projects: '$(testProjects)'
+            arguments: '--configuration $(buildConfiguration) --no-build --no-restore'
 
-    - task: DotNetCoreCLI@2
-      displayName: Pack
-      inputs:
-        command: pack
-        packagesToPack: '$(projects);!$(testProjects)'
-        configuration: '$(buildConfiguration) '
-        nobuild: true
-        versioningScheme: byEnvVar
-        versionEnvVar: GitVersion.NuGetVersion
-        packDirectory: $(Build.ArtifactStagingDirectory)
+        - task: DotNetCoreCLI@2
+          displayName: Pack
+          inputs:
+            command: pack
+            packagesToPack: '$(projects);!$(testProjects)'
+            configuration: '$(buildConfiguration) '
+            nobuild: true
+            versioningScheme: byEnvVar
+            versionEnvVar: GitVersion.NuGetVersion
+            packDirectory: $(Build.ArtifactStagingDirectory)
 
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Artifact'
-      inputs:
-        targetPath: '$(build.artifactstagingdirectory)'
-        artifact: 'packages'
-        publishLocation: 'pipeline'
-  
-  - job: AzDoPackageDeploy    
-    displayName: Package deployment on Azure Devops
-    dependsOn:
-      - Build
-    steps:
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        buildType: 'current'
-        artifactName: 'packages'
-        targetPath: '$(Pipeline.Workspace)\packages'
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Artifact'
+          inputs:
+            targetPath: '$(build.artifactstagingdirectory)'
+            artifact: 'packages'
+            publishLocation: 'pipeline'
+  - stage: AzDoPackageDeploy
+    dependsOn: Build
+    jobs: 
+    - job: AzDoPackageDeploy    
+      displayName: Package deployment on Azure Devops
+      steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'packages'
+          targetPath: '$(Pipeline.Workspace)\packages'
 
