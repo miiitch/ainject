@@ -12,6 +12,7 @@ pool:
 
 jobs: 
   - job: Build
+    displayName: Build
     variables:
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
@@ -65,4 +66,14 @@ jobs:
         artifact: 'packages'
         publishLocation: 'pipeline'
   
-     
+  - job: AzDoPackageDeploy    
+    displayName: Package deployment on Azure Devops
+    dependsOn:
+      - Build
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'packages'
+        targetPath: '$(Pipeline.Workspace)\packages'
+
