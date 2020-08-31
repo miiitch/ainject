@@ -39,7 +39,7 @@ jobs:
       inputs:
         projects: '$(projects)'
         arguments: '--configuration $(buildConfiguration) --no-restore /property:Version=$(GitVersion.MajorMinorPatch)'
-
+    
     - task: DotNetCoreCLI@2
       displayName: Test
       inputs:
@@ -56,8 +56,13 @@ jobs:
         nobuild: true
         versioningScheme: byEnvVar
         versionEnvVar: GitVersion.NuGetVersion
+        packDirectory: $(Build.ArtifactStagingDirectory)
 
-    - task: PublishBuildArtifacts@1
+    - task: PublishPipelineArtifact@1
       displayName: 'Publish Artifact'
       inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
+        targetPath: '$(build.artifactstagingdirectory)'
+        artifact: 'packages'
+        publishLocation: 'pipeline'
+  
+     
