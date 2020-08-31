@@ -8,7 +8,13 @@ trigger:
 - master
 
 pool:
-  name: Azure Pipelines
+  vmImage: 'windows-latest'
+
+variables:
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  projects: '**/*.csproj'
+  testProjects: '**/*.*Tests.csproj'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -25,27 +31,27 @@ steps:
   displayName: Restore
   inputs:
     command: restore
-    projects: '$(Parameters.RestoreBuildProjects)'
+    projects: '$(projects)'
 
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
-    projects: '$(Parameters.RestoreBuildProjects)'
-    arguments: '--configuration $(BuildConfiguration) --no-restore /property:Version=$(GitVersion.MajorMinorPatch)'
+    projects: '$(projects)'
+    arguments: '--configuration $(buildConfiguration) --no-restore /property:Version=$(GitVersion.MajorMinorPatch)'
 
 - task: DotNetCoreCLI@2
   displayName: Test
   inputs:
     command: test
-    projects: '$(Parameters.TestProjects)'
-    arguments: '--configuration $(BuildConfiguration) --no-build --no-restore'
+    projects: '$(testProjects)'
+    arguments: '--configuration $(buildConfiguration) --no-build --no-restore'
 
 - task: DotNetCoreCLI@2
   displayName: Pack
   inputs:
     command: pack
-    packagesToPack: '**/*.csproj;-:**/*.*Tests.csproj'
-    configuration: '$(BuildConfiguration) '
+    packagesToPack: '$(projects);!$(testProjects)'
+    configuration: '$(buildConfiguration) '
     nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: GitVersion.NuGetVersion
