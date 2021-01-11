@@ -58,6 +58,12 @@ namespace Ainject.Abstractions.Internals
             Write(metrics);
         }
 
+        public void TrackDependency(string dependencyTypeName, string dependencyName, string data, DateTimeOffset startTime,
+            TimeSpan duration, bool success)
+        {
+            WriteLine($"[DEP] {dependencyTypeName}/{dependencyName}/{data} {startTime:s} -> {success} {duration:g}");
+        }
+
         public void TrackTrace(string message, TraceSeverity severity, Dictionary<string, string> telemetryData)
         {
             WriteLine($"[TRC] ({severity}) {message}");

@@ -54,7 +54,7 @@ namespace Ainject.Abstractions
             _client.TrackException(exception, telemetryData, metrics);
         }
 
-
+      
 
         private Dictionary<string, string> GenerateTelemetryDictionary(TelemetryData telemetryData)
         {
@@ -112,11 +112,20 @@ namespace Ainject.Abstractions
             TrackExceptionCore(exception, eventData, metrics?.GetDictionary());
         }
 
+        public void TrackDependency(string dependencyTypeName, string dependencyName, string data,
+            DateTimeOffset startTime, TimeSpan duration, bool success)
+        {
+            _client.TrackDependency(dependencyTypeName, dependencyName, data, startTime, duration, success);
+        }
+
+
         public ITelemetry CloneWith(TelemetryData telemetryData)
         {
             var data = GenerateTelemetryDictionary(telemetryData);
 
             return new Telemetry(_client, new TelemetryData(data));
         }
+        
+        
     }
 }

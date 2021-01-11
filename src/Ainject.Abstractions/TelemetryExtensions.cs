@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Ainject.Abstractions.Internals;
 
 namespace Ainject.Abstractions
 {
@@ -88,5 +89,10 @@ namespace Ainject.Abstractions
         }
 
 
+        public static IDependencyCall CreateDependencyCall(this ITelemetry telemetry, string dependencyTypeName, string dependencyName, string data,
+            DependencyCallDefaultStatus defaultStatus = DependencyCallDefaultStatus.Success)
+        {
+            return new DependencyCall(telemetry, dependencyTypeName, dependencyName, data, defaultStatus);
+        }
     }
 }

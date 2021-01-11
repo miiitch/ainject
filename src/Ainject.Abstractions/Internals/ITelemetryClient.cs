@@ -18,5 +18,8 @@ namespace Ainject.Abstractions.Internals
 
         void TrackException(Exception exception, Dictionary<string, string> telemetryData,
             Dictionary<string, double> metrics);
+        
+        void TrackDependency(string dependencyTypeName, string dependencyName, string data,
+            DateTimeOffset startTime, TimeSpan duration, bool success);
     }
 }

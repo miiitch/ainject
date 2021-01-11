@@ -93,5 +93,11 @@ namespace Ainject.ApplicationInsights.Internals
         {
             _telemetryClient.TrackException(exception, telemetryData, metrics);
         }
+
+
+        public void TrackDependency(string dependencyTypeName, string dependencyName, string data,DateTimeOffset startTime,TimeSpan duration, bool success )
+        {
+            _telemetryClient.TrackDependency(dependencyTypeName,dependencyName,data, startTime, duration, success);
+        }
     }
 }

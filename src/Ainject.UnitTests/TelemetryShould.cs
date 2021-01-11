@@ -25,7 +25,7 @@ namespace Ainject.UnitTests
 
 
         [Fact]
-        public void Call_TrackException_Propagages_The_Same_Exception()
+        public void Call_TrackException_Propagates_The_Same_Exception()
         {
             var telemetry = new Telemetry(_client);
 
@@ -119,6 +119,84 @@ namespace Ainject.UnitTests
 
 
             _client.Received().TrackTrace(message, severity, Arg.Is<Dictionary<string,string>>(data => data == null || data.Count == 0 ));
+        }
+        
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Call_TrackDependency(bool success)
+        {
+            var telemetry = new Telemetry(_client);
+
+            var deptype = "DepType";
+            var depname = "DepName";
+            var depdata = "DepData";
+            var now = DateTimeOffset.UtcNow;
+            var duration = TimeSpan.FromSeconds(1);
+            telemetry.TrackDependency(deptype, depname, depdata,now,duration, success);
+            
+            _client.Received().TrackDependency(
+                deptype,
+                depname,
+                depdata,
+                now,
+                duration,
+                success);
+        }
+        
+        [Theory]
+        [InlineData(DependencyCallDefaultStatus.Success,true)]
+        [InlineData(DependencyCallDefaultStatus.Failed,false)]
+        public void Call_DependencyCallWithDefaultStatus(DependencyCallDefaultStatus defaultStatus, bool success)
+        {
+            var telemetry = new Telemetry(_client);
+
+            var deptype = "DepType";
+            var depname = "DepName";
+            var depdata = "DepData";
+            
+            var dependency = telemetry.CreateDependencyCall(deptype, depname, depdata, defaultStatus);
+            
+            dependency.Dispose();
+            
+            _client.Received().TrackDependency(
+               deptype,
+                depname,
+                depdata,
+                Arg.Any<DateTimeOffset>(),
+                Arg.Any<TimeSpan>(),
+               success);
+        }
+        
+        [Theory]
+        [InlineData(DependencyCallDefaultStatus.Success,true)]
+        [InlineData(DependencyCallDefaultStatus.Failed,false)]
+        public void Call_DependencyCallWithManualStatus(DependencyCallDefaultStatus defaultStatus, bool success)
+        {
+            var telemetry = new Telemetry(_client);
+
+            var deptype = "DepType";
+            var depname = "DepName";
+            var depdata = "DepData";
+            
+            var dependency = telemetry.CreateDependencyCall(deptype, depname, depdata, defaultStatus);
+
+            if (success)
+            {
+                dependency.TrackSuccess();                
+            }
+            else
+            {
+                dependency.TrackFailure();
+            }
+            
+            _client.Received().TrackDependency(
+                deptype,
+                depname,
+                depdata,
+                Arg.Any<DateTimeOffset>(),
+                Arg.Any<TimeSpan>(),
+                success);
         }
 
         [Theory]
