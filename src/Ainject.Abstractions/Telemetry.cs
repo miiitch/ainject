@@ -15,79 +15,75 @@ namespace Ainject.Abstractions
         protected internal Telemetry(ITelemetryClient client, TelemetryData data)
         {
             if (client is null) throw new ArgumentNullException(nameof(client));
+
             _client = client;
             _data = data;
         }
 
         protected internal Telemetry(ITelemetryClient client) : this(client, null)
         {
-
         }
 
         private void TrackTraceCore(string message, TraceSeverity severity,
-            Dictionary<string, string> telemetryData)
+            Dictionary<string, string> data)
         {
-            _client.TrackTrace(message, severity, telemetryData);
+            _client.TrackTrace(message, severity, data);
         }
 
         private void TrackEventCore(string eventName,
-            Dictionary<string, string> telemetryData,
+            Dictionary<string, string> data,
             Dictionary<string, double> metrics)
         {
-            _client.TrackEvent(eventName, telemetryData, metrics);
+            _client.TrackEvent(eventName, data, metrics);
         }
 
         private void TrackMetricCore(string metricName, double value)
         {
             _client.TrackMetric(metricName, value);
-
         }
 
-        private void TrackMetricCore(string metricName,string dimensionName, Dictionary<string, double> values)
+        private void TrackMetricCore(string metricName, string dimensionName, Dictionary<string, double> values)
         {
-            _client.TrackMetric(metricName,dimensionName, values);
+            _client.TrackMetric(metricName, dimensionName, values);
         }
 
-        private void TrackExceptionCore(Exception exception, Dictionary<string, string> telemetryData,
+        private void TrackExceptionCore(Exception exception, Dictionary<string, string> data,
             Dictionary<string, double> metrics)
         {
-            _client.TrackException(exception, telemetryData, metrics);
+            _client.TrackException(exception, data, metrics);
         }
 
-      
 
-        private Dictionary<string, string> GenerateTelemetryDictionary(TelemetryData telemetryData)
+        private Dictionary<string, string> GenerateTelemetryDictionary(TelemetryData extraTelemetryData)
         {
-            Dictionary<string, string> result = null;
-            if (_data == null || _data.IsEmpty)
+            if (_data is null or {IsEmpty: true})
             {
-                result = telemetryData?.GetDictionary();
+                return extraTelemetryData?.GetDictionary();
             }
-            else if (telemetryData != null && !telemetryData.IsEmpty)
+
+            if (extraTelemetryData is null or {IsEmpty: true})
             {
-                result = new Dictionary<string, string>();
-                _data.CopyTo(result);
-                telemetryData.CopyTo(result);
+                return _data.GetDictionary();
             }
-            else
-            {
-                result = _data.GetDictionary();
-            }
+
+            var result = new Dictionary<string, string>();
+            _data.CopyTo(result);
+            extraTelemetryData.CopyTo(result);
 
             return result;
         }
 
         public void TrackTrace(string message, TraceSeverity severity,
-            TelemetryData telemetryData = null)
+            TelemetryData data = null)
         {
-            var traceData = GenerateTelemetryDictionary(telemetryData);
+            var traceData = GenerateTelemetryDictionary(data);
 
             TrackTraceCore(message, severity, traceData);
         }
 
-        public void TrackEvent(string eventName, TelemetryData telemetryData = null, TelemetryMetrics metrics = null)
+        public void TrackEvent(string eventName, TelemetryData data = null, TelemetryMetrics metrics = null)
         {
-            var eventData = GenerateTelemetryDictionary(telemetryData);
+            var eventData = GenerateTelemetryDictionary(data);
 
             TrackEventCore(eventName, eventData, metrics?.GetDictionary());
         }
@@ -100,14 +96,15 @@ namespace Ainject.Abstractions
         public void TrackMetric(string metricName, string dimensionName, TelemetryMetrics values)
         {
             if (values is null) throw new ArgumentNullException(nameof(values));
-            TrackMetricCore(metricName, dimensionName,values.GetDictionary());
+
+            TrackMetricCore(metricName, dimensionName, values.GetDictionary());
         }
 
-        public void TrackException(Exception exception, TelemetryData telemetryData = null, TelemetryMetrics metrics = null)
+        public void TrackException(Exception exception, TelemetryData data = null, TelemetryMetrics metrics = null)
         {
             if (exception is null) throw new ArgumentNullException(nameof(exception));
 
-            var eventData = GenerateTelemetryDictionary(telemetryData);
+            var eventData = GenerateTelemetryDictionary(data);
 
             TrackExceptionCore(exception, eventData, metrics?.GetDictionary());
         }
@@ -119,13 +116,11 @@ namespace Ainject.Abstractions
         }
 
 
-        public ITelemetry CloneWith(TelemetryData telemetryData)
+        public ITelemetry CloneWith(TelemetryData data)
         {
-            var data = GenerateTelemetryDictionary(telemetryData);
+            var clonedData = GenerateTelemetryDictionary(data);
 
-            return new Telemetry(_client, new TelemetryData(data));
+            return new Telemetry(_client, new TelemetryData(clonedData));
         }
-        
-        
     }
 }

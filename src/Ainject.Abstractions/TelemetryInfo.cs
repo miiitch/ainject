@@ -7,7 +7,7 @@ namespace Ainject.Abstractions
     {
         private readonly Dictionary<string, T> _dictionary;
 
-        public Dictionary<string, T> GetDictionary() => new Dictionary<string, T>(_dictionary);
+        public Dictionary<string, T> GetDictionary() => new(_dictionary);
 
 
         public TelemetryInfo() : this(null)
@@ -17,14 +17,7 @@ namespace Ainject.Abstractions
 
         public TelemetryInfo(IDictionary<string, T> values)
         {
-            if (values is null)
-            {
-                _dictionary = new Dictionary<string, T>();
-            }
-            else
-            {
-                _dictionary = new Dictionary<string, T>(values);
-            }                
+            _dictionary = values is null ? new Dictionary<string, T>() : new Dictionary<string, T>(values);
         }
 
         private void AddKeyValue(string key, T value)

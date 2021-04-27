@@ -11,6 +11,8 @@
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
    
     <PackageIconUrl>https://raw.githubusercontent.com/miiitch/ainject/master/icon.png</PackageIconUrl>
+   
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

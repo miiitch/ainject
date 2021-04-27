@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Ainject.Abstractions;
 using Ainject.Abstractions.Internals;
 using NFluent;
@@ -63,17 +64,49 @@ namespace Ainject.UnitTests
         }
 
         [Fact]
-        public void Call_TraceTrace_with_Error_level_when_TrackError_is_called()
+        public void Call_TraceTrace_with_Error_level_when_TrackError_is_called_with_null_data()
         {
             var telemetry = new Telemetry(_client);
 
             var message = "TraceMessage";
 
-            telemetry.TrackError(message);
+            telemetry.TrackError(message,null);
 
 
-            _client.Received().TrackTrace(message, TraceSeverity.Error, Arg.Is<Dictionary<string, string>>(data => data == null || data.Count == 0));
+            _client.Received().TrackTrace(message, TraceSeverity.Error, Arg.Is<Dictionary<string, string>>(data => data == null));
         }
+        
+        
+        [Fact]
+        public void Call_TraceTrace_with_Error_level_when_TrackError_is_called_with_single_empty_data()
+        {
+            var telemetry = new Telemetry(_client);
+
+            var message = "TraceMessage";
+
+            var errorData = new TelemetryData();
+            telemetry.TrackError(message,errorData);
+
+
+            _client.Received().TrackTrace(message, TraceSeverity.Error, Arg.Is<Dictionary<string, string>>(data => data!= null && data.Count == 0));
+        }
+        
+        [Fact]
+        public void Call_TraceTrace_with_Error_level_when_TrackError_is_called_with_single_one_data()
+        {
+            var telemetry = new Telemetry(_client);
+
+            var message = "TraceMessage";
+
+            var errorDataA = new TelemetryData();
+            errorDataA["A"] = "X";
+            var errorDataB = new TelemetryData();
+            errorDataA["B"] = "Y";
+            telemetry.TrackError(message,errorDataA,errorDataB);
+            
+            _client.Received().TrackTrace(message, TraceSeverity.Error, Arg.Is<Dictionary<string, string>>(data => data!= null && data.Count == 2 && data["A"] == "X" && data["B"] == "Y"));
+        }
+
 
         [Fact]
         public void Call_TraceTrace_with_Verbose_level_when_TrackVerbose_is_called()
