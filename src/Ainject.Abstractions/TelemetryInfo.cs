@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Ainject.Abstractions
 {
@@ -56,6 +57,17 @@ namespace Ainject.Abstractions
             }
         }
 
+        public void Append(Object obj, CultureInfo culture = null)
+        {
+            culture ??= CultureInfo.InvariantCulture;
 
+            AppendCore(obj,null);
+
+            void AppendCore(Object obj, string prefix)
+            {
+                
+            }
+            
+        }
     }
 }

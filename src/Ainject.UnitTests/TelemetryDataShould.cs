@@ -40,14 +40,14 @@ namespace Ainject.UnitTests
             var data1 = new TelemetryData
             {
                 ["A"] = "X",
-                ["B"] = "Y",
+                ["B"] = "Y"
 
             };
             var data2 = new TelemetryData
             {
           
                 ["B"] = "Z",
-                ["C"] = "Z",
+                ["C"] = "Z"
             };
 
             var data = new[] { data1,data2};
@@ -57,7 +57,7 @@ namespace Ainject.UnitTests
             {
                 ["A"] = "X",
                 ["B"] = "Y",
-                ["C"] = "Z",
+                ["C"] = "Z"
             };
             Check.That(result.GetDictionary()).ContainsExactly(expected);
         }
@@ -69,7 +69,7 @@ namespace Ainject.UnitTests
             var data1 = new TelemetryData
             {
                 ["A"] = "X",
-                ["B"] = "Y",
+                ["B"] = "Y"
 
             };
             TelemetryData data2 = null;
@@ -77,7 +77,7 @@ namespace Ainject.UnitTests
             {
 
                 ["B"] = "Z",
-                ["C"] = "Z",
+                ["C"] = "Z"
             };
 
           
@@ -91,7 +91,7 @@ namespace Ainject.UnitTests
             {
                 ["A"] = "X",
                 ["B"] = "Y",
-                ["C"] = "Z",
+                ["C"] = "Z"
             };
             Check.That(result.GetDictionary()).ContainsExactly(expected);
         }
@@ -114,6 +114,21 @@ namespace Ainject.UnitTests
 
             Check.That(data["A"]).IsEqualTo("X");
         }
+
+        [Fact]
+        public void Append_Data_From_Object()
+        {
+            var actual = new
+            {
+                X = 3,
+                Y = "Hello"
+            };
+            var data = new TelemetryData();
+            data.Append(actual);
+            Check.That(data["X"]).IsEqualTo("3");
+            Check.That(data["Y"]).IsEqualTo("Hello");
+        }
+        
 
 
     }
